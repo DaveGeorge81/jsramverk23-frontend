@@ -87,7 +87,7 @@ function renderTicketView(item) {
 
     var locationString = "";
     if (item.FromLocation) {
-         locationString = `<h3>Tåg från ${item.FromLocation[0].LocationName} till ${item.ToLocation[0].LocationName}. Just nu i ${item.LocationSignature}.</h3>`;
+        locationString = `<h3>Tåg från ${item.FromLocation[0].LocationName} till ${item.ToLocation[0].LocationName}. Just nu i ${item.LocationSignature}.</h3>`;
     }
 
     container.innerHTML = `<div class="ticket-container">
@@ -124,6 +124,7 @@ function renderTicketView(item) {
         event.preventDefault();
 
         var newTicket = {
+            id: newTicketId,
             code: reasonCodeSelect.value,
             trainnumber: item.OperationalTrainNumber,
             traindate: item.EstimatedTimeAtLocation.substring(0, 10),
@@ -132,7 +133,7 @@ function renderTicketView(item) {
         fetch("http://localhost:1337/tickets", {
             body: JSON.stringify(newTicket),
             headers: {
-              'content-type': 'application/json'
+                'content-type': 'application/json'
             },
             method: 'POST'
         })
@@ -140,12 +141,12 @@ function renderTicketView(item) {
             .then((result) => {
                 renderTicketView(item);
             });
-    });
+        });
 
     fetch("http://localhost:1337/tickets")
         .then((response) => response.json())
         .then((result) => {
-            var lastId = result.data[1] ? result.data[1].id : 0;
+            let lastId = result.data[result.data.length - 1]['id'];
 
             newTicketId = lastId + 1;
 
@@ -162,8 +163,6 @@ function renderTicketView(item) {
             });
         });
 
-
-
     fetch("http://localhost:1337/codes")
         .then((response) => response.json())
         .then((result) => {
@@ -176,8 +175,6 @@ function renderTicketView(item) {
                 reasonCodeSelect.appendChild(element);
             });
         });
-
-
 }
 
 renderMainView();
