@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import * as React from 'react';
 
-function App() {
+const App = () => {
+    const [isOpen, setOpen] = React.useState(false);
+
+    const handleOpen = () => {
+      setOpen(true);
+    };
+
+    const handleClose = () => {
+      setOpen(false);
+    };
+
+    return (
+    <div>
+        <Button onClick={handleOpen}>Open</Button>
+        <Button onClick={handleClose}>Close</Button>
+
+        {isOpen && <div>Toggle is on</div>}
+        {!isOpen && <div>Toggle is off</div>}
+      </div>
+    );
+};
+
+const Button = ({ onClick, children }) => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <button type="button" onClick={onClick}>
+      {children}
+    </button>
   );
-}
+};
+
+
 
 export default App;
